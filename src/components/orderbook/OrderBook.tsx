@@ -85,19 +85,25 @@ function BookTable({ symbol, book }: { symbol: string; book: BookSnapshot }) {
         </div>
       </div>
 
-      {/* Highest ask on top, so the best ask sits right above the spread. */}
+      {/* Highest ask on top, so the best ask sits right above the spread.
+          Rows are keyed by their distance from the spread (0 = best), not by
+          price: each slot keeps its DOM node and only its text changes when
+          prices move. Keyed by price, React would move the rows up and down on
+          every snapshot, which the browser counts as layout shift (CLS). */}
       <div role="rowgroup" aria-label="Asks" className="flex min-h-0 flex-1 flex-col justify-end overflow-hidden">
-        {[...asks].reverse().map((level) => (
-          <LevelRow
-            key={level.price}
-            symbol={symbol}
-            side="ask"
-            price={level.price}
-            qty={level.qty}
-            total={level.total}
-            depth={depthOf(level.total)}
-          />
-        ))}
+        {asks
+          .map((level, distance) => (
+            <LevelRow
+              key={distance}
+              symbol={symbol}
+              side="ask"
+              price={level.price}
+              qty={level.qty}
+              total={level.total}
+              depth={depthOf(level.total)}
+            />
+          ))
+          .reverse()}
       </div>
 
       <div role="row" className={`${COLUMNS} my-1 h-7 border-y border-line bg-ink/40`}>
@@ -108,11 +114,11 @@ function BookTable({ symbol, book }: { symbol: string; book: BookSnapshot }) {
         </span>
       </div>
 
-      {/* Best bid on top, right below the spread. */}
+      {/* Best bid on top, right below the spread. Keyed by distance, as above. */}
       <div role="rowgroup" aria-label="Bids" className="min-h-0 flex-1 overflow-hidden">
-        {bids.map((level) => (
+        {bids.map((level, distance) => (
           <LevelRow
-            key={level.price}
+            key={distance}
             symbol={symbol}
             side="bid"
             price={level.price}
