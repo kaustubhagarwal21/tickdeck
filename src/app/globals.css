@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens. @theme turns each colour into Tailwind utilities (bg-panel,
+ * text-up, border-line, ...) and also keeps it as a CSS variable
+ * (var(--color-up)) for the hand-written rules further down.
+ *
+ * Surfaces use Tailwind's slate scale, which the chart's own styling uses too.
+ */
+@theme {
+  --color-ink: #020617; /* page background (slate-950) */
+  --color-panel: #0f172a; /* panel cards (slate-900) */
+  --color-raised: #1e293b; /* hovered and selected rows, active tabs (slate-800) */
+  --color-line: #1e293b; /* borders and dividers (slate-800) */
+  --color-fg: #e2e8f0; /* main text (slate-200) */
+  --color-muted: #94a3b8; /* secondary text (slate-400) */
+  --color-up: #22c55e; /* price up and Buy: the same green as the chart's candles */
+  --color-down: #ef4444; /* price down and Sell: the same red as the chart's candles */
+  --color-accent: #fbbf24; /* the logo, the selected row and the "Simulated" badge (amber-400) */
+  --color-focus: #38bdf8; /* keyboard focus rings, as in the chart toolbar (sky-400) */
+}
+
+/* Fonts come from next/font in layout.tsx, which sets these variables on <html>. */
+@theme inline {
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
+}
+
+@layer base {
+  :root {
+    /* Dark scrollbars and native form controls. */
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--color-ink);
+    color: var(--color-fg);
+  }
+
+  /* One visible focus ring for keyboard users on every control. It sits in
+     the base layer, so a Tailwind utility on an element can still change it. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /*
+   * The terminal grid. Phones and tablets get one column in reading order.
+   * From Tailwind's lg breakpoint (1024px) up:
+   *
+   *   watchlist | chart     | order book
+   *   positions and orders  | order ticket
+   */
+  .terminal {
+    display: grid;
+    gap: 0.375rem;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "watch" "chart" "side" "blotter";
+  }
+
+  /* The bottom row (positions and orders) is 28% of the window height, kept
+     between 10rem and 15rem, so a short laptop window still leaves the chart
+     and the watchlist enough room. */
+  @media (width >= 64rem) {
+    .terminal {
+      grid-template-columns: 15rem minmax(0, 1fr) 19rem;
+      grid-template-rows: minmax(0, 1fr) clamp(10rem, 28dvh, 15rem);
+      grid-template-areas:
+        "watch chart side"
+        "blotter blotter side";
+    }
+  }
+
+  @media (width >= 96rem) {
+    .terminal {
+      grid-template-columns: 17rem minmax(0, 1fr) 21rem;
+      grid-template-rows: minmax(0, 1fr) clamp(10rem, 28dvh, 17rem);
+    }
+  }
+
+  /* Watchlist: DOM focus stays on the list itself, so the focus ring is drawn
+     on the row the arrow keys have moved to. */
+  [role="listbox"]:focus-visible {
+    outline: none;
+  }
+
+  [role="listbox"]:focus-visible [data-active="true"] {
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+  }
+
+  /* Price flash: a tinted layer behind a price that fades out after a move.
+     Only opacity is animated, which browsers can run on the compositor
+     thread without layout or repaint. */
+  .flash {
+    position: absolute;
+    inset: 0 -0.25rem;
+    z-index: -1;
+    border-radius: 2px;
+    animation: flash-fade 700ms ease-out forwards;
+  }
+
+  .flash-up {
+    background: color-mix(in srgb, var(--color-up) 22%, transparent);
+  }
+
+  .flash-down {
+    background: color-mix(in srgb, var(--color-down) 22%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flash {
+      animation: none;
+      opacity: 0;
+    }
+  }
+}
+
+@keyframes flash-fade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
