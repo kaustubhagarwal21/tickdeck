@@ -1,6 +1,10 @@
 /**
- * The simulated NSE market. Both the Web Worker (sim.worker.ts) and the
- * main-thread fallback in simulatedFeed.ts run this same code.
+ * The simulated NSE market. Both the web app's Web Worker
+ * (src/lib/feed/sim.worker.ts) and its main-thread fallback
+ * (src/lib/feed/simulatedFeed.ts) run this same code.
+ *
+ * It needs no DOM and no Worker API, only setInterval and Date.now, which every
+ * JavaScript runtime has. That is why it lives in @tickdeck/core.
  *
  * It has two layers:
  *  1. createSimMarket, nextPrice and makeBook generate trades and order books.
@@ -9,8 +13,8 @@
  *  2. runSimulation drives a market with timers and hands out batches of
  *     messages at the configured rate.
  */
-import type { BookLevel, BookSnapshot, FeedMessage, Tick } from '@/lib/types';
-import { SIM_SEED_PRICES } from '@/lib/symbols';
+import type { BookLevel, BookSnapshot, FeedMessage, Tick } from '../types';
+import { SIM_SEED_PRICES } from '../symbols';
 
 /** Trades per second across all symbols when the URL has no ?rate=. */
 export const DEFAULT_TICKS_PER_SECOND = 400;

@@ -5,7 +5,7 @@ import { EmptyState } from '@/components/common/EmptyState';
 import { formatPrice, formatQty, priceDecimals } from '@/components/common/format';
 import { Panel } from '@/components/common/Panel';
 import { Skeleton } from '@/components/common/Skeleton';
-import type { BookSnapshot } from '@/lib/types';
+import type { BookSnapshot } from '@tickdeck/core';
 import { useBook, useFeedStatus, useSelected } from '@/store/selectors';
 import { buildLadder } from './ladder';
 

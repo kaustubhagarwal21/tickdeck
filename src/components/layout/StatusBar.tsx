@@ -1,6 +1,6 @@
 'use client';
 
-import type { FeedKind } from '@/lib/types';
+import type { FeedKind } from '@tickdeck/core';
 import { useFeedKind, useFeedStatus, useMetrics, useSymbols } from '@/store/selectors';
 import { FEED_STATUS_TEXT } from './feedStatus';
 import { useFps } from './useFps';

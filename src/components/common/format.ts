@@ -1,4 +1,4 @@
-import type { OrderRequest, Side } from '@/lib/types';
+import type { OrderRequest, Side } from '@tickdeck/core';
 
 /**
  * Number and text formatting shared by every panel.

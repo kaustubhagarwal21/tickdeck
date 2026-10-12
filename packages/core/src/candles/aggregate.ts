@@ -9,7 +9,7 @@
  * arrays and objects instead. That keeps them easy to test, and safe to use
  * with React and Zustand, which detect changes by comparing references.
  */
-import type { Candle, Interval, Tick } from '@/lib/types';
+import type { Candle, Interval, Tick } from '../types';
 
 /** Length of each candle interval, in seconds. */
 export const INTERVAL_SECONDS: Record<Interval, number> = {

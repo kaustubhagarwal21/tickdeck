@@ -3,7 +3,7 @@
 import { memo } from 'react';
 import { EmptyState } from '@/components/common/EmptyState';
 import { formatMoney, formatPercent, formatPrice, formatQty, signColor } from '@/components/common/format';
-import type { Position } from '@/lib/types';
+import type { Position } from '@tickdeck/core';
 import { useQuote } from '@/store/selectors';
 
 const CELL = 'px-3 py-1.5 text-right font-mono tabular-nums';

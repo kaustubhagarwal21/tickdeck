@@ -1,4 +1,4 @@
-import type { Position, Side } from '@/lib/types';
+import type { Position, Side } from '../types';
 
 /** One execution: what was traded, in which direction, how much and at what price. */
 export interface Fill {

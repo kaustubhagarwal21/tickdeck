@@ -1,4 +1,4 @@
-import type { Candle, Tick } from '@/lib/types';
+import type { Candle, Tick } from '../../types';
 import { applyTick, bucketStart, buildCandles, MAX_CANDLES } from '../aggregate';
 
 // 12 Oct 2026, 09:15:00 IST (03:45:00 UTC), when NSE opens. It is a whole

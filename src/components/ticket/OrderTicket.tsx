@@ -6,8 +6,8 @@ import { describeOrder, formatMoney, formatPrice, priceInputValue } from '@/comp
 import { Panel } from '@/components/common/Panel';
 import { Segmented, type SegmentOption } from '@/components/common/Segmented';
 import { Skeleton } from '@/components/common/Skeleton';
-import { validateOrder } from '@/lib/orders/validate';
-import type { Side } from '@/lib/types';
+import { validateOrder } from '@tickdeck/core';
+import type { Side } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { useOrderStore } from '@/store/orderStore';
 import { useSelected } from '@/store/selectors';

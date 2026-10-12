@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, type KeyboardEvent } from 'react';
-import type { Interval } from '@/lib/types';
+import type { Interval } from '@tickdeck/core';
 
 /** The intervals on offer, in display order. */
 const INTERVALS: Interval[] = ['1s', '5s', '1m'];

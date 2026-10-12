@@ -1,7 +1,6 @@
-import type { FeedKind, MarketFeed } from '@/lib/types';
-import { BINANCE_SYMBOLS, SIM_SYMBOLS } from '@/lib/symbols';
+import type { FeedKind, MarketFeed } from '@tickdeck/core';
+import { BINANCE_SYMBOLS, DEFAULT_TICKS_PER_SECOND, SIM_SYMBOLS } from '@tickdeck/core';
 import { createBinanceFeed } from './binanceFeed';
-import { DEFAULT_TICKS_PER_SECOND } from './simEngine';
 import { createSimulatedFeed, type SimulatedFeedOptions } from './simulatedFeed';
 
 /** Upper limit for ?rate=, so a typo cannot freeze the browser. */

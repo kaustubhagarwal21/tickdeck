@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { Order, Quote } from '@/lib/types';
+import type { Order, Quote } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { useOrderStore } from '@/store/orderStore';
 import { PositionsPanel } from '../PositionsPanel';

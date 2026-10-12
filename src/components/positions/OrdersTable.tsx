@@ -3,8 +3,8 @@
 import { memo } from 'react';
 import { EmptyState } from '@/components/common/EmptyState';
 import { describeOrder, formatPrice, formatTime } from '@/components/common/format';
-import { isWorking } from '@/lib/orders/match';
-import type { Order, OrderStatus } from '@/lib/types';
+import { isWorking } from '@tickdeck/core';
+import type { Order, OrderStatus } from '@tickdeck/core';
 import { useOrderStore } from '@/store/orderStore';
 
 /** Label and badge colours for each order status. */

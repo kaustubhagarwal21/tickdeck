@@ -1,4 +1,4 @@
-import type { BookSnapshot } from '@/lib/types';
+import type { BookSnapshot } from '@tickdeck/core';
 import { buildLadder } from '../ladder';
 
 const book: BookSnapshot = {

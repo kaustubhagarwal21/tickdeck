@@ -1,4 +1,4 @@
-import type { BookSnapshot, FeedKind, FeedStatus, Quote, Tick } from '@/lib/types';
+import type { BookSnapshot, FeedKind, FeedStatus, Quote, Tick } from '@tickdeck/core';
 import { useMarketStore, type MarketState } from './marketStore';
 
 // Narrow selector hooks over the market store. A component re-renders only

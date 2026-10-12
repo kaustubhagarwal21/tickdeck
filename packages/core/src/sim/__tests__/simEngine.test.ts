@@ -1,5 +1,5 @@
-import type { FeedMessage } from '@/lib/types';
-import { SIM_SEED_PRICES, SIM_SYMBOLS } from '@/lib/symbols';
+import type { FeedMessage } from '../../types';
+import { SIM_SEED_PRICES, SIM_SYMBOLS } from '../../symbols';
 import {
   BOOK_DEPTH,
   TICK_SIZE,

@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { CandlestickSeries, createChart, LineSeries, type IChartApi, type ISeriesApi } from 'lightweight-charts';
-import type { Tick } from '@/lib/types';
+import type { Tick } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { PriceChart, SUMMARY_EVERY_MS } from '../PriceChart';
 

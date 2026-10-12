@@ -1,15 +1,19 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { validateOrder } from '@/lib/orders/validate';
-import type { Order, OrderRequest, Quote } from '@/lib/types';
+import { validateOrder } from '@tickdeck/core';
+import type { Order, OrderRequest, Quote } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { useOrderStore } from '@/store/orderStore';
 import { OrderTicket } from '../OrderTicket';
 
-// The validation rules have their own tests in src/lib/orders. Here each test
-// decides what validateOrder returns, so these tests check only the ticket's
-// part: showing the message, and not placing an invalid order.
-jest.mock('@/lib/orders/validate', () => ({ validateOrder: jest.fn() }));
+// The validation rules have their own tests in packages/core/src/orders. Here
+// each test decides what validateOrder returns, so these tests check only the
+// ticket's part: showing the message, and not placing an invalid order. The
+// rest of @tickdeck/core stays real (the spread of requireActual).
+jest.mock('@tickdeck/core', () => ({
+  ...jest.requireActual<typeof import('@tickdeck/core')>('@tickdeck/core'),
+  validateOrder: jest.fn(),
+}));
 const mockValidate = jest.mocked(validateOrder);
 
 function quote(symbol: string, last: number): Quote {

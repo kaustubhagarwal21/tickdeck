@@ -1,5 +1,5 @@
 import { act, render, screen } from '@testing-library/react';
-import { BINANCE_SYMBOLS, SIM_SYMBOLS } from '@/lib/symbols';
+import { BINANCE_SYMBOLS, SIM_SYMBOLS } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { useOrderStore } from '@/store/orderStore';
 import { BINANCE_FIRST_DATA_TIMEOUT_MS, FeedProvider } from '../FeedProvider';

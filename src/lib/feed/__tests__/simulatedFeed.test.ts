@@ -1,4 +1,4 @@
-import type { FeedMessage } from '@/lib/types';
+import type { FeedMessage } from '@tickdeck/core';
 import { createSimulatedFeed } from '../simulatedFeed';
 
 const statusesOf = (messages: FeedMessage[]) =>

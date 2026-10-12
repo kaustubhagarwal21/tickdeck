@@ -1,6 +1,6 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import type { Quote } from '@/lib/types';
+import type { Quote } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { useQuote } from '@/store/selectors';
 import { Watchlist } from '../Watchlist';

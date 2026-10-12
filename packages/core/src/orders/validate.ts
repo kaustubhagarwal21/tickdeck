@@ -1,4 +1,4 @@
-import type { OrderRequest } from '@/lib/types';
+import type { OrderRequest } from '../types';
 
 const isPositive = (value: number) => Number.isFinite(value) && value > 0;
 

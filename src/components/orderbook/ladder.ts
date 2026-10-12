@@ -1,4 +1,4 @@
-import type { BookLevel, BookSnapshot } from '@/lib/types';
+import type { BookLevel, BookSnapshot } from '@tickdeck/core';
 
 /** One price level as the order book shows it. */
 export interface LadderRow {

@@ -1,4 +1,4 @@
-import type { Position, Side } from '@/lib/types';
+import type { Position, Side } from '../../types';
 import { applyFill } from '../positions';
 
 const fill = (side: Side, qty: number, price: number) => ({ symbol: 'TCS', side, qty, price });

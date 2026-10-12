@@ -26,9 +26,8 @@ import {
   type UTCTimestamp,
 } from 'lightweight-charts';
 import { formatPrice, priceDecimals } from '@/components/common/format';
-import { applyTick, buildCandles } from '@/lib/candles/aggregate';
-import { sma, vwap, type LinePoint } from '@/lib/candles/indicators';
-import type { Candle, Interval, Tick } from '@/lib/types';
+import { applyTick, buildCandles, sma, vwap } from '@tickdeck/core';
+import type { Candle, Interval, LinePoint, Tick } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { useSelected } from '@/store/selectors';
 import {

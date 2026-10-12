@@ -2,10 +2,10 @@
 
 import { Suspense, useEffect, useState, type ReactNode } from 'react';
 import { useSearchParams, type ReadonlyURLSearchParams } from 'next/navigation';
-import type { FeedKind, FeedMessage } from '@/lib/types';
+import type { FeedKind, FeedMessage } from '@tickdeck/core';
 import { createFeed, parseFeedParams, symbolsFor, type FeedChoice } from '@/lib/feed/createFeed';
 import { createRafBatcher } from '@/lib/feed/rafBatcher';
-import { DEFAULT_TICKS_PER_SECOND } from '@/lib/feed/simEngine';
+import { DEFAULT_TICKS_PER_SECOND } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { useOrderStore } from '@/store/orderStore';
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useId, useState, type KeyboardEvent } from 'react';
-import { isWorking } from '@/lib/orders/match';
+import { isWorking } from '@tickdeck/core';
 import { useOrderStore } from '@/store/orderStore';
 import { OrdersTable } from './OrdersTable';
 import { PositionsTable } from './PositionsTable';

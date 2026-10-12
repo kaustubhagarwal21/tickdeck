@@ -1,4 +1,4 @@
-import type { FeedMessage, FeedStatus } from '@/lib/types';
+import type { FeedMessage, FeedStatus } from '@tickdeck/core';
 import {
   backoffDelay,
   binanceStreamUrl,

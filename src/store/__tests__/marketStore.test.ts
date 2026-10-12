@@ -1,4 +1,4 @@
-import type { FeedMessage } from '@/lib/types';
+import type { FeedMessage } from '@tickdeck/core';
 import { MAX_TICKS_PER_SYMBOL, useMarketStore } from '../marketStore';
 
 const tick = (symbol: string, price: number, ts = 1): FeedMessage => ({

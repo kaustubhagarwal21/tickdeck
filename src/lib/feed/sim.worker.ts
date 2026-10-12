@@ -5,8 +5,8 @@
  * Protocol: the page posts one SimWorkerStart message; the worker then posts
  * batches of FeedMessage[] until the page terminates it.
  */
-import type { FeedMessage } from '@/lib/types';
-import { runSimulation, type SimWorkerStart } from './simEngine';
+import { runSimulation } from '@tickdeck/core';
+import type { FeedMessage, SimWorkerStart } from '@tickdeck/core';
 
 // The project is type-checked with the DOM library, where `self` is a Window.
 // Inside a worker, `self` is the worker's global scope; these are the only two

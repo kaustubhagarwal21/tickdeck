@@ -1,5 +1,5 @@
 import { render, screen, within } from '@testing-library/react';
-import type { BookSnapshot } from '@/lib/types';
+import type { BookSnapshot } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
 import { OrderBook } from '../OrderBook';
 

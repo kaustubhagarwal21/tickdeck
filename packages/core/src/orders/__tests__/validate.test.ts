@@ -1,4 +1,4 @@
-import type { OrderRequest } from '@/lib/types';
+import type { OrderRequest } from '../../types';
 import { validateOrder } from '../validate';
 
 const limit: OrderRequest = { type: 'LIMIT', side: 'BUY', symbol: 'TCS', qty: 10, price: 3100 };

@@ -1,4 +1,4 @@
-import type { Order, OrderRequest, OrderStatus, Tick } from '@/lib/types';
+import type { Order, OrderRequest, OrderStatus, Tick } from '../../types';
 import { isWorking, matchOrder, shouldFill, shouldTrigger } from '../match';
 
 const order = (req: OrderRequest, status: OrderStatus = 'OPEN'): Order => ({

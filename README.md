@@ -15,7 +15,7 @@ The demo is a static export (`STATIC_EXPORT=1 npx next build`, which writes
 
 ## Features
 
-- **Two market feeds behind one interface** (`MarketFeed` in `src/lib/types.ts`):
+- **Two market feeds behind one interface** (`MarketFeed` in `packages/core/src/types.ts`):
   - **Binance**: live trades and top-10 order books for six USDT pairs over
     Binance's public combined WebSocket stream, with type-guarded parsing and
     reconnects with exponential backoff (1 s, 2 s, 4 s, 8 s, then 15 s).
@@ -158,12 +158,16 @@ the Playwright tests with Playwright's bundled Chromium.
 ## Project layout
 
 ```text
+packages/core/     @tickdeck/core: pure TypeScript shared by the web app and the mobile app
+                    (no React, no DOM), imported as "@tickdeck/core"
+  src/types.ts      the shared contract: Tick, BookSnapshot, FeedMessage, OrderRequest...
+  src/symbols.ts    the instruments each feed streams
+  src/orders/       validateOrder, matchOrder, position maths
+  src/candles/      tick-to-candle aggregation, SMA and VWAP
+  src/sim/          simEngine: the simulated NSE market (random walk, order books)
 src/
   app/              page.tsx (the grid of panels), layout.tsx, globals.css
-  lib/types.ts      the shared contract: Tick, BookSnapshot, FeedMessage, OrderRequest...
-  lib/feed/         binanceFeed, simulatedFeed + sim.worker + simEngine, rafBatcher, createFeed
-  lib/candles/      tick-to-candle aggregation, SMA and VWAP
-  lib/orders/       validateOrder, matchOrder, position maths (pure functions)
+  lib/feed/         binanceFeed, simulatedFeed + sim.worker, rafBatcher, createFeed
   store/            marketStore (applyBatch), orderStore (paper trading), selectors
   components/       FeedProvider, chart/, watchlist/, orderbook/, ticket/, positions/, layout/, common/
 e2e/                Playwright tests and the performance measurement

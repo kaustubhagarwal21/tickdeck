@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { BookSnapshot, FeedKind, FeedMessage, FeedStatus, Quote, Tick } from '@/lib/types';
+import type { BookSnapshot, FeedKind, FeedMessage, FeedStatus, Quote, Tick } from '@tickdeck/core';
 
 /**
  * Live market data: quotes, order books and recent ticks for every symbol.

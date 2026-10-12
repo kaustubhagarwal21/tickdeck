@@ -5,7 +5,8 @@ import nextTs from 'eslint-config-next/typescript';
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  // Generated output that should never be linted.
+  // Generated output that should never be linted, plus mobile/: the Expo app
+  // has its own package.json and its own lint setup.
   globalIgnores([
     '.next/**',
     'out/**',
@@ -15,6 +16,7 @@ const eslintConfig = defineConfig([
     'playwright-report/**',
     'test-results/**',
     'blob-report/**',
+    'mobile/**',
   ]),
 ]);
 

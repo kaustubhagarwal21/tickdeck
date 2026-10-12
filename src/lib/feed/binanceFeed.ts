@@ -1,4 +1,4 @@
-import type { BookLevel, FeedMessage, FeedStatus, MarketFeed } from '@/lib/types';
+import type { BookLevel, FeedMessage, FeedStatus, MarketFeed } from '@tickdeck/core';
 import { createEmitter } from './emitter';
 
 /** Binance's public market-data endpoint for combined streams. No API key is needed. */

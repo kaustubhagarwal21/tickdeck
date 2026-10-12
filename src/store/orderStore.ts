@@ -1,14 +1,13 @@
 import { create } from 'zustand';
-import type { Order, OrderRequest, Position, Tick } from '@/lib/types';
-import { isWorking, matchOrder } from '@/lib/orders/match';
-import { applyFill, type Fill } from '@/lib/orders/positions';
-import { validateOrder } from '@/lib/orders/validate';
+import { applyFill, isWorking, matchOrder, validateOrder } from '@tickdeck/core';
+import type { Fill, Order, OrderRequest, Position, Tick } from '@tickdeck/core';
 import { useMarketStore } from './marketStore';
 
 /**
  * Paper trading: orders and positions, filled against the live trades. The
  * rules (validation, matching, position maths) are pure functions in
- * src/lib/orders; this store keeps the state and calls them.
+ * @tickdeck/core (packages/core/src/orders); this store keeps the state and
+ * calls them.
  */
 export interface OrderState {
   /** Every order placed this session, newest first. */

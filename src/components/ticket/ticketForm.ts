@@ -1,4 +1,4 @@
-import type { OrderRequest, Side } from '@/lib/types';
+import type { OrderRequest, Side } from '@tickdeck/core';
 
 /** 'MARKET' | 'LIMIT' | 'SL', taken from the shared OrderRequest type. */
 export type OrderType = OrderRequest['type'];

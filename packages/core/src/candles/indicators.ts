@@ -2,7 +2,7 @@
  * Chart indicators computed from candles. Both functions are pure and return
  * one point per candle that has a value, ready to draw as a line on the chart.
  */
-import type { Candle } from '@/lib/types';
+import type { Candle } from '../types';
 
 /** One point of an indicator line: a candle's time (UTC seconds) and the value there. */
 export interface LinePoint {

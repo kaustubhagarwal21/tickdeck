@@ -1,4 +1,4 @@
-import type { OrderRequest, Side, Tick } from '@/lib/types';
+import type { OrderRequest, Side, Tick } from '@tickdeck/core';
 import { useMarketStore } from '../marketStore';
 import { useOrderStore } from '../orderStore';
 

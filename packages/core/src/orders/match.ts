@@ -1,4 +1,4 @@
-import type { Order, Side, Tick } from '@/lib/types';
+import type { Order, Side, Tick } from '../types';
 
 /**
  * Pure order-matching rules for paper trading. The order store runs

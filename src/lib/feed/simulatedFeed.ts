@@ -1,6 +1,6 @@
-import type { FeedMessage, MarketFeed } from '@/lib/types';
+import { DEFAULT_TICKS_PER_SECOND, runSimulation } from '@tickdeck/core';
+import type { FeedMessage, MarketFeed, SimWorkerStart } from '@tickdeck/core';
 import { createEmitter } from './emitter';
-import { DEFAULT_TICKS_PER_SECOND, runSimulation, type SimWorkerStart } from './simEngine';
 
 export interface SimulatedFeedOptions {
   /** Trades per second across all symbols. */

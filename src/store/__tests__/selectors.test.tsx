@@ -1,6 +1,6 @@
 import { Profiler, type ReactNode } from 'react';
 import { act, render, screen } from '@testing-library/react';
-import type { FeedMessage } from '@/lib/types';
+import type { FeedMessage } from '@tickdeck/core';
 import { useMarketStore } from '../marketStore';
 import { useBook, useQuote, useTicks } from '../selectors';
 

@@ -1,4 +1,4 @@
-import { BINANCE_SYMBOLS, SIM_SYMBOLS } from '@/lib/symbols';
+import { BINANCE_SYMBOLS, SIM_SYMBOLS } from '@tickdeck/core';
 import { MAX_TICKS_PER_SECOND, createFeed, parseFeedParams, symbolsFor } from '../createFeed';
 
 const parse = (query: string) => parseFeedParams(new URLSearchParams(query));

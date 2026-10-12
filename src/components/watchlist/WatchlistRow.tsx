@@ -3,7 +3,7 @@
 import { memo, useState } from 'react';
 import { formatPercent, formatPrice, isCryptoSymbol, signColor } from '@/components/common/format';
 import { Skeleton } from '@/components/common/Skeleton';
-import type { Quote } from '@/lib/types';
+import type { Quote } from '@tickdeck/core';
 import { useQuote } from '@/store/selectors';
 
 interface WatchlistRowProps {

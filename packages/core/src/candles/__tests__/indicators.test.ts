@@ -1,4 +1,4 @@
-import type { Candle } from '@/lib/types';
+import type { Candle } from '../../types';
 import { sma, vwap } from '../indicators';
 
 /** A candle at `time` with the given close. Pass `extra` to set high, low or volume for VWAP. */
