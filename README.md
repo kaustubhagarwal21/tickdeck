@@ -6,6 +6,11 @@ Charts 5**. It streams hundreds of trades a second into a watchlist, an order
 book, a live candlestick chart and a paper-trading ticket, and keeps the page
 smooth by committing market data to the store at most once per animation frame.
 
+**Live demo:** https://tickdeck-kaustubh.netlify.app (live Binance data) and
+https://tickdeck-kaustubh.netlify.app/?feed=sim (simulated NSE-style feed).
+The demo is a static export (`STATIC_EXPORT=1 npx next build`, which writes
+`out/`), since the dashboard runs entirely in the browser.
+
 ![TickDeck at 1440x900 on the simulated feed](docs/dashboard.png)
 
 ## Features
