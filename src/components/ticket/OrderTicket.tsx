@@ -6,6 +6,7 @@ import { describeOrder, formatMoney, formatPrice, priceInputValue } from '@/comp
 import { Panel } from '@/components/common/Panel';
 import { Segmented, type SegmentOption } from '@/components/common/Segmented';
 import { Skeleton } from '@/components/common/Skeleton';
+import { Button } from '@/components/ui/Button';
 import { validateOrder } from '@tickdeck/core';
 import type { Side } from '@tickdeck/core';
 import { useMarketStore } from '@/store/marketStore';
@@ -167,11 +168,13 @@ function OrderForm({ symbol }: { symbol: string }) {
         </p>
       )}
 
-      <button
+      {/* The shared Button: buy / sell colours, focus ring and disabled look.
+          Disabled (not loading) while there is no price: nothing can be sent yet. */}
+      <Button
         type="submit"
+        variant={side === 'BUY' ? 'buy' : 'sell'}
         disabled={waitingForPrice}
         aria-describedby={error ? errorId : undefined}
-        className={`flex h-9 items-center justify-center gap-2 rounded-md text-sm font-semibold text-ink transition-[filter] hover:brightness-110 disabled:cursor-not-allowed disabled:bg-raised disabled:text-muted disabled:hover:brightness-100 ${side === 'BUY' ? 'bg-up' : 'bg-down'}`}
       >
         {waitingForPrice ? (
           <>
@@ -184,7 +187,7 @@ function OrderForm({ symbol }: { symbol: string }) {
         ) : (
           `${side === 'BUY' ? 'Buy' : 'Sell'} ${symbol}`
         )}
-      </button>
+      </Button>
 
       {/* Always rendered, so screen readers announce each new message in it. */}
       <p role="status" className={`text-xs ${notice?.ok ? 'text-up' : 'text-down'}`}>

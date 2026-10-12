@@ -5,6 +5,10 @@ TypeScript**, **Zustand 5**, **WebSockets** and TradingView's **Lightweight
 Charts 5**. It streams hundreds of trades a second into a watchlist, an order
 book, a live candlestick chart and a paper-trading ticket, and keeps the page
 smooth by committing market data to the store at most once per animation frame.
+It also has a simulated **option chain with Black-Scholes Greeks**, a small
+**design system** with a living style guide at `/design`, and a **React
+Native (Expo) app** that shares the trading logic through the
+`@tickdeck/core` package.
 
 **Live demo:** https://tickdeck-kaustubh.netlify.app (live Binance data) and
 https://tickdeck-kaustubh.netlify.app/?feed=sim (simulated NSE-style feed).
@@ -12,6 +16,8 @@ The demo is a static export (`STATIC_EXPORT=1 npx next build`, which writes
 `out/`), since the dashboard runs entirely in the browser.
 
 ![TickDeck at 1440x900 on the simulated feed](docs/dashboard.png)
+
+![The option chain tab with all Greeks shown](docs/optionchain.png)
 
 ## Features
 
@@ -32,6 +38,30 @@ The demo is a static export (`STATIC_EXPORT=1 npx next build`, which writes
 - **Paper trading**: MARKET, LIMIT and stop-loss (SL) orders, typed as a
   discriminated union, validated by pure functions and filled against the live
   trades. Positions show live P&L.
+- **Option chain** (the "Option chain" tab next to the chart): CALLS | STRIKE |
+  PUTS for the selected symbol, 21 strikes around the last price, with LTP,
+  Delta and IV, and Gamma, Theta and Vega behind "All Greeks". The ATM row is
+  highlighted, in-the-money cells are shaded, and a Weekly / Monthly switch
+  picks the expiry (NSE-style Tuesday expiries, in IST). Prices and Greeks
+  come from a Black-Scholes pricer in `packages/core/src/options/`, tested
+  against textbook values and put-call parity. The chain reprices on every
+  trade.
+- **Design system** in `src/components/ui`: Button, Badge, Card, Tabs,
+  NumberField, PriceCell and Skeleton, typed and accessible. The living style
+  guide at [`/design`](https://tickdeck-kaustubh.netlify.app/design) shows the
+  colour, spacing, radius and type tokens (read from the CSS variables) and
+  every component in every state. The dashboard uses its Tabs (chart / option
+  chain, positions / orders) and its Button (the order button).
+- **Shared core package** `@tickdeck/core` (`packages/core`): types,
+  instruments, order rules, candle maths, the simulated market and the option
+  maths, in plain TypeScript with no React or DOM, used by both apps.
+- **Mobile app** in `mobile/` (Expo SDK 57, React Native 0.86, TypeScript): a
+  live watchlist, an order ticket (MARKET, LIMIT, SL), positions with P&L and
+  orders, on the same simulation and order rules from `@tickdeck/core`. See
+  [mobile/README.md](mobile/README.md).
+- **Core Web Vitals**: `<WebVitals />` in the root layout reports LCP, CLS,
+  INP, FCP and TTFB to `window.__vitals`, and `e2e/vitals.spec.ts` measures
+  them in the browser.
 - **Status bar** that shows the pipeline live: trades in per second, store
   commits per second, and frames painted per second.
 - Accessible panels (named landmarks, live regions, visible focus rings) and a
@@ -88,6 +118,14 @@ The demo is a static export (`STATIC_EXPORT=1 npx next build`, which writes
 5. **Off-main-thread simulation**. The simulated market runs in a Web Worker,
    and the throughput counters stay outside React state until they are
    published once a second.
+6. **Code splitting** (`src/components/chart/LazyPriceChart.tsx`,
+   `src/components/layout/CenterPanel.tsx`). The chart and lightweight-charts
+   load through `next/dynamic` after the first-load bundle, behind a skeleton
+   of the same size. The option chain loads only when its tab is opened.
+7. **Stable order-book rows** (`src/components/orderbook/OrderBook.tsx`).
+   Rows are keyed by their distance from the spread, not by price, so each
+   row keeps its DOM node and only its text changes. Keyed by price, the rows
+   moved on every book snapshot, which the browser counted as layout shift.
 
 ### Measured
 
@@ -109,7 +147,35 @@ trades on a 25 ms timer, 40 times a second, which is why commits settle near
 
 First-load JavaScript for `/`, measured with `npm run size` from the
 production build (Next.js 16 no longer prints it in `next build`):
-**236.4 kB gzip** (759.2 kB raw) in 8 files, plus 6.9 kB gzip of CSS.
+
+| | Raw | Gzip |
+| --- | --- | --- |
+| Before lazy-loading the chart (8 files) | 759.2 kB | 236.5 kB |
+| **After** (9 files) | **608.8 kB** | **188.9 kB** |
+| Chart chunk, loaded after the page | 168.2 kB | 54.5 kB |
+| Option chain chunk, loaded when its tab opens | 7.3 kB | 2.9 kB |
+
+That is 47.6 kB (20%) less gzipped JavaScript before the page can start. The
+CSS for `/` grew from 6.9 kB to 7.9 kB gzip (29.5 kB to 36.4 kB raw), because
+Tailwind writes one stylesheet for every route, now including `/design` and
+the option chain.
+
+Core Web Vitals, measured with `npx playwright test e2e/vitals.spec.ts` (run
+alone) against the production build on localhost: Microsoft Edge, 1280x720,
+`/?feed=sim`, no CPU or network throttling, read 2 s after the chart has
+drawn. Three runs each:
+
+| Metric | Now | Before the order-book fix |
+| --- | --- | --- |
+| LCP | 284, 252, 280 ms | 320, 340, 324 ms |
+| FCP | 284, 252, 280 ms (the same paint as LCP) | 320, 340, 324 ms |
+| CLS (sum of all shifts) | **0.0114, 0.0116, 0.0116** | 0.0756, 0.0562, 0.0742 |
+
+The CLS figure adds up every layout shift without recent input, which is never
+less than the official CLS (the worst burst). The shift that remains (about
+0.01) is the order ticket growing from its skeleton to the full form when the
+first price arrives. These are localhost numbers on a fast laptop, not field
+data from phones.
 
 ## Running it
 
@@ -127,6 +193,7 @@ Then open:
 | http://localhost:3000/ or `/?feed=binance` | Live Binance data (falls back to simulated if unreachable) |
 | http://localhost:3000/?feed=sim | Simulated NSE-style data, 400 trades/s |
 | http://localhost:3000/?feed=sim&rate=2000 | Simulated, 2,000 trades/s (at most 10,000) |
+| http://localhost:3000/design | The design system's style guide |
 
 Production build: `npm run build`, then `npm start`.
 
@@ -136,20 +203,25 @@ Production build: `npm run build`, then `npm start`.
 | --- | --- |
 | `npm run typecheck` | Next.js route types, then `tsc --noEmit` (strict) |
 | `npm run lint` | ESLint with the Next.js and TypeScript rules |
-| `npm test` | Jest + React Testing Library: **231 tests in 25 suites** |
-| `npm run test:e2e` | Playwright: **12 tests**, against the production build on port 3100 |
+| `npm test` | Jest + React Testing Library: **303 tests in 37 suites** (108 of them in `packages/core`) |
+| `npm run test:e2e` | Playwright: **16 tests**, against the production build on port 3100 |
 | `npm run test:perf` | Only the performance measurement (writes `e2e-artifacts/perf.json`) |
 | `npm run size` | First-load JS of `/` from the last build |
 
 The Jest suites cover the pure logic (feeds, frame batcher, simulator, candle
-aggregation, indicators, order validation and matching, positions), the stores
-and the components. The Playwright tests always use `?feed=sim`, so they never
+aggregation, indicators, order validation and matching, positions,
+Black-Scholes and the option chain), the stores and the components. The Playwright tests always use `?feed=sim`, so they never
 depend on the network. They cover: the page loads and the feed connects;
 watchlist prices change within 3 s; selecting a symbol updates the chart; a
 LIMIT BUY above the last price fills and appears in Positions; an invalid
 quantity shows a validation error; keyboard navigation of the watchlist; the
-layout at 1440x900, 1366x650 and phone size; and the performance sample. A
-shared fixture fails any test that logs a console error.
+layout at 1440x900, 1366x650 and phone size; the option chain tab (keyboard
+switch, 21 strikes, one ATM row near the spot price, live repricing, All
+Greeks, back to the chart); `/design` (token values after hydration, keyboard
+tabs); the Core Web Vitals budgets and the app's own `window.__vitals`; and
+the performance sample. A shared fixture fails any test that logs a console
+error. The mobile app has its own checks in `mobile/` (`npm run typecheck`,
+`npm test`: 16 tests, `npm run export:web`).
 
 Locally, Playwright drives the Microsoft Edge that ships with Windows. CI
 (`.github/workflows/ci.yml`, Node 22) runs typecheck, lint, Jest, the build and
@@ -165,12 +237,18 @@ packages/core/     @tickdeck/core: pure TypeScript shared by the web app and the
   src/orders/       validateOrder, matchOrder, position maths
   src/candles/      tick-to-candle aggregation, SMA and VWAP
   src/sim/          simEngine: the simulated NSE market (random walk, order books)
+  src/options/      Black-Scholes prices and Greeks, the simulated option chain
 src/
   app/              page.tsx (the grid of panels), layout.tsx, globals.css
+  app/design/       the /design style guide
   lib/feed/         binanceFeed, simulatedFeed + sim.worker, rafBatcher, createFeed
   store/            marketStore (applyBatch), orderStore (paper trading), selectors
-  components/       FeedProvider, chart/, watchlist/, orderbook/, ticket/, positions/, layout/, common/
-e2e/                Playwright tests and the performance measurement
+  components/       FeedProvider, chart/, watchlist/, orderbook/, ticket/, positions/,
+                    optionchain/, layout/ (CenterPanel: chart / option chain tabs),
+                    perf/ (WebVitals), common/, ui/ (the design system)
+mobile/             the Expo app (own package.json); imports @tickdeck/core through
+                    tsconfig paths, Metro (resolveRequest + watchFolders) and Jest
+e2e/                Playwright tests, the performance and Core Web Vitals measurements
 scripts/            bundle-size.mjs
 ```
 
@@ -179,6 +257,14 @@ scripts/            bundle-size.mjs
 - **Simulated data is simulated.** The NSE-style prices are a random walk
   generated in your browser, starting near rough real-world levels. They are
   not quotes, and the stock names are only labels.
+- **The option chain is simulated.** It is priced with Black-Scholes from the
+  live (or simulated) spot price, an assumed IV smile (20% at the money for
+  stocks, 60% for crypto) and an assumed 6% rate. It is not exchange data,
+  there is no implied-volatility solver, expiries ignore exchange holidays,
+  and weekly expiries are offered for every symbol although NSE lists them
+  only for indices. The panel is labelled "Simulated".
+- **The mobile app** has been checked through its web export in a browser,
+  not yet on an Android or iOS device or emulator.
 - **Orders are paper trades.** Nothing is sent to any broker or exchange. A
   simulated fill happens at the price of the next qualifying trade, with no
   partial fills, queue position, fees or margin.

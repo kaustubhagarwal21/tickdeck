@@ -1,5 +1,5 @@
 import { FeedProvider } from '@/components/FeedProvider';
-import { ChartPanel } from '@/components/layout/ChartPanel';
+import { CenterPanel } from '@/components/layout/CenterPanel';
 import { FeedErrorBanner } from '@/components/layout/FeedErrorBanner';
 import { Header } from '@/components/layout/Header';
 import { StatusBar } from '@/components/layout/StatusBar';
@@ -39,7 +39,7 @@ export default function Home() {
             <Watchlist />
           </div>
           <div className="h-[28rem] min-h-0 [grid-area:chart] lg:h-auto">
-            <ChartPanel />
+            <CenterPanel />
           </div>
           <div className="flex min-h-0 flex-col gap-1.5 [grid-area:side]">
             <div className="min-h-0 lg:flex-1">
