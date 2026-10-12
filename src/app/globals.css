@@ -20,6 +20,19 @@
   --color-focus: #38bdf8; /* keyboard focus rings, as in the chart toolbar (sky-400) */
 }
 
+/*
+ * Design-system additions: two type sizes below Tailwind's text-xs (12px).
+ * The panels already use these sizes as one-off values (text-[11px] for
+ * panel titles and tabs, text-[10px] for small badges); as tokens they become
+ * text-2xs and text-3xs, and the /design style guide lists them.
+ */
+@theme {
+  --text-2xs: 0.6875rem; /* 11px: panel titles, tab labels, field hints */
+  --text-2xs--line-height: 1rem;
+  --text-3xs: 0.625rem; /* 10px: badges and counters */
+  --text-3xs--line-height: 0.875rem;
+}
+
 /* Fonts come from next/font in layout.tsx, which sets these variables on <html>. */
 @theme inline {
   --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
