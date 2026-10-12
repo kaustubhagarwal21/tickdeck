@@ -28,3 +28,7 @@ export * from './candles/indicators';
 
 // The simulated NSE market (random-walk trades and order books on timers).
 export * from './sim/simEngine';
+
+// European option prices and Greeks (Black-Scholes), and the simulated option chain.
+export * from './options/blackScholes';
+export * from './options/chain';

@@ -38,6 +38,16 @@ const EXPECTED_EXPORTS = [
   'makeBook',
   'createSimMarket',
   'runSimulation',
+  // options/
+  'normCdf',
+  'normPdf',
+  'blackScholes',
+  'buildChain',
+  'smileIv',
+  'strikeStepFor',
+  'nextWeeklyExpiry',
+  'nextMonthlyExpiry',
+  'nextExpiry',
 ];
 
 describe('@tickdeck/core', () => {
