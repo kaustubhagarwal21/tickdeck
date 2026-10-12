@@ -1,6 +1,6 @@
 'use client';
 
-import { PriceChart } from '@/components/chart/PriceChart';
+import { LazyPriceChart } from '@/components/chart/LazyPriceChart';
 import { formatPercent, formatPrice, signColor } from '@/components/common/format';
 import { Panel } from '@/components/common/Panel';
 import { useQuote, useSelected } from '@/store/selectors';
@@ -8,12 +8,13 @@ import { useQuote, useSelected } from '@/store/selectors';
 /**
  * The chart slot in the middle of the terminal. PriceChart brings its own
  * toolbar (symbol, candle interval, indicators); this panel frames it and puts
- * the selected symbol's last price in the title bar.
+ * the selected symbol's last price in the title bar. The chart and its library
+ * arrive in their own chunk after the page loads (see LazyPriceChart).
  */
 export function ChartPanel() {
   return (
     <Panel title="Price chart" aside={<LastPrice />} bodyClassName="p-3">
-      <PriceChart />
+      <LazyPriceChart />
     </Panel>
   );
 }

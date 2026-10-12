@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { IBM_Plex_Mono, IBM_Plex_Sans } from 'next/font/google';
 import type { ReactNode } from 'react';
+import { WebVitals } from '@/components/perf/WebVitals';
 import './globals.css';
 
 // next/font downloads the fonts at build time and serves them from this app:
@@ -38,7 +39,11 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="en" className={`${plexSans.variable} ${plexMono.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased">
+        {/* Reports Core Web Vitals to window.__vitals; renders nothing. */}
+        <WebVitals />
+        {children}
+      </body>
     </html>
   );
 }
